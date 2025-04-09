@@ -19,20 +19,19 @@ path1 = "CAP_audio"
 path2 = "MG_cap"
 path3 = "RF_Cap"
 
-print(frechet.score(path1, path2))
-print(frechet.score(path1, path3))
+fad_score1 = frechet.score(path1, path2)
+fad_score2 = frechet.score(path1, path3)
 
-### Write FAD scores to a csv file
+# Save the scores to a csv file
 
-fad_scores = []
-for i in range(10):
-    fad_scores.append(frechet.score(f"CAP_audio/cap{i}.wav", f"MG_cap/cap_{i}.wav"))
+import pandas as pd
 
-df = pd.DataFrame({'CAP_audio + MusicGen_audio':fad_scores})
+fad_dict = {'MusicGen': [fad_score1], 'Riffusion': [fad_score2]}
 
+df = pd.DataFrame(fad_dict)
 df.to_csv('fad_scores.csv',index=False)
 
-
+print("Completed FAD evaluation")
 
 
 from transformers import ClapModel, ClapProcessor
